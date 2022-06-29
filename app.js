@@ -30,6 +30,7 @@ app.get(('/'), (req, res) => {
     //Verificando se o usuario esta logado
     if(req.session.login){
         res.render('logado');
+        console.log("O usuario logado é o: " + req.session.login);
     }else{
         res.render('home')
     }
