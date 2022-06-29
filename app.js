@@ -2,21 +2,22 @@ const express = require('express');
 const session = require ('express-session');
 const bodyParser = require('body-parser'); // Realizar a interação com o formulário do HTML
 
-
-//paginas HTML
-const home = __dirname + "/src/index.html";
-const paginaLogado = __dirname + "/src/logado/index.html";
-
 //Servidor
 const server = 3000;
+let path = require('path')
 const app = express();
+
+//Monstrando o caminho das paginas HTML para o app.js
+app.engine('html', require('ejs').renderFile); // npm install ejs para funcinar
+app.set('view engine', 'html');
+app.set('src', path.join(__dirname, '/src'));
 
 app.listen(server, () => {
     console.log('servidor funcionando')
 })
 
 //Conf Pagina
-app.use(session({secret:"amoeba"}));
+app.use(session({secret:"jabsdjh2813u1892"}));
 app.use(bodyParser.urlencoded({extended:true}));
 
 //Criando um usuario manualmente
@@ -28,9 +29,9 @@ let password = "123";
 app.get(('/'), (req, res) => {
     //Verificando se o usuario esta logado
     if(req.session.login){
-        res.render("logado");
+        res.render('logado');
     }else{
-        res.sendFile(home)
+        res.render('home')
     }
 });
 
@@ -42,10 +43,10 @@ app.post(('/'), (req, res) => {
         //Logado com sucesso 
         req.session.login = login;
         console.log("Usuario logado com sucesso")
-        res.sendFile(paginaLogado)
+        res.render('logado')
     }else{
         console.log("Usuario ou senha inexistente")
-        res.sendFile(home)
+        res.render('home')
     }
     
 });
